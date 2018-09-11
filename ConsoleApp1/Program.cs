@@ -7,28 +7,62 @@ using System.Threading.Tasks;
 namespace FizzBuzz
 {
     public class FizzBuzzer
-     {
+    {
+        public FizzBuzzer()
+        {
+        }
+
+
         public void FizzBuzz(int number)
         {
-            string fizzBuzzOutput = "Fizz";
-            if (number == 3)
+            var fizzbuzzes = new List<string>();
+            //delegate void constructStringRule(string text, List<String> existingArray);
+
+            Action stringRule = () => fizzbuzzes.Add("Fizz");
+            Dictionary<int, Action> rules = new Dictionary<int, Action>
             {
-                fizzBuzzOutput = "Fizz";
-            }
-            else
+                {3, stringRule}
+            };
+            foreach (KeyValuePair<int, Action> rule in rules)
             {
-                fizzBuzzOutput = "Buzz";
+                if (this.Divisible(number, rule.Key))
+                {
+                    rule.Value.Invoke();
+                }
+
             }
+            // if (this.Divisible(number, 3))
+            // {
+            //     this.stringRule("Fizz", fizzbuzzes);
+            // }
+            // else
+            // {
+            //     this.stringRule("Buzz", fizzbuzzes);
+            // }
+            string fizzBuzzOutput = String.Join(String.Empty, fizzbuzzes);
             System.Console.WriteLine(fizzBuzzOutput);
         }
+            
+        private bool Divisible(int number, int divisor)
+        {
+             bool divisible = (number % divisor == 0);
+             return divisible;
+        }
+
+        //private void stringRule(string text, List<String> existingArray)
+        //{
+        //    existingArray.Add(text);
+        //}
      }
     class TestFizzBuzz
     {
         static void Main()
         {
             var fizzbuzzer = new FizzBuzzer();
-            fizzbuzzer.FizzBuzz(3);
-            fizzbuzzer.FizzBuzz(5);
+            for (int i = 1; i < 100; i++)
+            {
+                fizzbuzzer.FizzBuzz(i);
+            }
             Console.ReadKey();
         }
     }
